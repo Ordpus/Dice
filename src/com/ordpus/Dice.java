@@ -96,13 +96,14 @@ public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 	@Override
 	public int startup() {
 		// 获取应用数据目录(无需储存数据时，请将此行注释)
-		val appDirectory = CQ.getAppDirectory();
+		val appDirectory = CQ.getAppDirectory() + "/data/";
 		// 返回如：D:\CoolQ\app\com.sobte.cqp.jcq\app\com.example.demo\
 		// 应用的所有数据、配置【必须】存放于此目录，避免给用户带来困扰。
 		Gson gson = new Gson();
 		try {
-			User.user = gson.fromJson(new FileReader(new File(appDirectory + "user.json")), new TypeToken<Map<Long, User>>() {}.getType());
+			User.user = gson.fromJson(new FileReader(appDirectory + "group.json"), new TypeToken<Map<Long, User>>() {}.getType());
 			Group.group = gson.fromJson(new FileReader(new File(appDirectory + "group.json")), new TypeToken<Map<Long, Group>>() {}.getType());
+
 		} catch(JsonIOException e) {
 			e.printStackTrace();
 		} catch(JsonSyntaxException e) {
@@ -122,7 +123,7 @@ public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 	 */
 	@Override
 	public int exit() {
-		val appDirectory = CQ.getAppDirectory();
+		val appDirectory = CQ.getAppDirectory() + "/data/";
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try {
 			var out = new FileOutputStream(new File(appDirectory + "user.json"));

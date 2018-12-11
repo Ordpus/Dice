@@ -8,6 +8,7 @@ import com.ordpus.util.StdOut;
 import com.ordpus.util.ast.nodes.DAstNode;
 import com.ordpus.util.ast.nodes.DAstNodeDice;
 import com.ordpus.util.ast.nodes.DAstNodeOp;
+import com.ordpus.util.ast.nodes.DAstNodeSharp;
 import com.ordpus.util.helper.MathUtil;
 import com.ordpus.util.info.DiceWrapper;
 import com.ordpus.util.info.Group;
@@ -68,7 +69,7 @@ public class DAst {
 	}
 
 	public static void main(String[] args) {
-		String str = "50*3+1";
+		String str = "50#(3d3 + 4d4)+1";
 		DAst root = of(new Group(), new User(), str);
 		StdOut.println(root);
 	}
@@ -92,7 +93,13 @@ public class DAst {
 	private double parseExpression(DAstNode node) {
 		if(node instanceof DAstNodeDice) return ((DAstNodeDice) node).dice.roll();
 		else if(node instanceof DAstNodeOp) return operator(((DAstNodeOp) node).op, parseExpression(node.e1), parseExpression(node.e2));
-		else return 0;
+		else if(node instanceof DAstNodeSharp) {
+			int count = (int) FastMath.round(parseExpression(node.e1));
+			double result = 0;
+			for(int i = 0; i < count; ++i)
+				result += parseExpression(node.e2);
+			return result;
+		} else return 0;
 	}
 
 	private static DAst parse(Group group, User user, String str) {
@@ -108,22 +115,7 @@ public class DAst {
 		String parse = "";
 		if(isOp(ch)) {
 			DAstNode curr = new DAstNodeOp(ch);
-			if(node.parent instanceof DAstNodeOp) {
-				DAstNodeOp prev = (DAstNodeOp) node.parent;
-				if(opLevel(ch) > opLevel(prev.op)) {
-					DAstNode e = prev.e2;
-					prev.e2 = curr;
-					curr.parent = prev;
-					curr.e1 = e;
-				} else {
-					DAstNode peek = getParent(node);
-					peek.parent = curr;
-					curr.e1 = peek;
-				}
-			} else {
-				node.parent = curr;
-				curr.e1 = node;
-			}
+			nodeTransfer(node, curr, ch);
 			return parseExpression(group, user, curr, str, i + 1);
 		} else if(Character.isDigit(ch) || ch == 'd') {
 			parse = getNextDice(str, i);
@@ -135,8 +127,15 @@ public class DAst {
 			return parseExpression(group, user, curr, str, i + parse.length());
 		} else if(ch == '#') {
 			parse = getNextBlock(str, i);
+			DAstNode curr = new DAstNodeSharp();
+			curr.e2 = getParent(parseExpression(group, user, null, parse, 0));
+			nodeTransfer(node, curr, ch);
+			if(str.charAt(i + 1) == '(') i += 2;
+			return parseExpression(group, user, curr, str, i + parse.length() + 1);
 		} else if(ch == '(') {
 			parse = getNextBlock(str, i);
+			node.e2 = getParent(parseExpression(group, user, node, parse, 0));
+			return parseExpression(group, user, null, str, i + parse.length() + 2);
 		}
 		return null;
 	}
@@ -195,6 +194,7 @@ public class DAst {
 	private static int opLevel(char ch) {
 		if(!isOp(ch)) return 0;
 		if(ch == '+' || ch == '-') return 1;
+		else if(ch == '#') return 3;
 		else return 2;
 	}
 
@@ -210,6 +210,25 @@ public class DAst {
 				return a / b;
 			default:
 				return 0;
+		}
+	}
+
+	private static void nodeTransfer(DAstNode node, DAstNode curr, char ch) {
+		if(node.parent instanceof DAstNodeOp) {
+			DAstNodeOp prev = (DAstNodeOp) node.parent;
+			if(opLevel(ch) > opLevel(prev.op)) {
+				DAstNode e = prev.e2;
+				prev.e2 = curr;
+				curr.parent = prev;
+				curr.e1 = e;
+			} else {
+				DAstNode peek = getParent(node);
+				peek.parent = curr;
+				curr.e1 = peek;
+			}
+		} else {
+			node.parent = curr;
+			curr.e1 = node;
 		}
 	}
 

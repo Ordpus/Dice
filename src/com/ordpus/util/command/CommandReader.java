@@ -3,6 +3,7 @@ package com.ordpus.util.command;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.ordpus.Dice;
 import com.ordpus.util.StdOut;
 import com.ordpus.util.ast.DAst;
 import com.ordpus.util.info.Group;
@@ -28,7 +29,7 @@ public class CommandReader {
 		while(i < command.length() && isText(command.charAt(i++))) {}
 		String dice = command.substring(s, i);
 		var result = DAst.of(group, user, dice);
-		return new CommandWrapper("dice", result.getContent()).add("hidden", s == 1);
+		return new CommandWrapper("dice", "* " + Dice.CQ.getStrangerInfo(user.id).getNick() + "由于 " + command.substring(i) + " 骰出了\n" + dice + " = " + result.getContent()).add("hidden", s == 1);
 	}
 
 	public static void main(String[] args) {
