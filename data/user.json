@@ -1,0 +1,28 @@
+{
+  "427984429": {
+    "id": 427984429,
+    "characters": {},
+    "kps": [],
+    "setting": {
+      "defaultDice": {
+        "count": 1,
+        "size": 100.0
+      },
+      "defaultGroupCharacter": {},
+      "simple": false
+    }
+  },
+  "91283": {
+    "id": 91283,
+    "characters": {},
+    "kps": [],
+    "setting": {
+      "defaultDice": {
+        "count": 1,
+        "size": 100.0
+      },
+      "defaultGroupCharacter": {},
+      "simple": false
+    }
+  }
+}
