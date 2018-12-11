@@ -126,11 +126,18 @@ public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 		val appDirectory = CQ.getAppDirectory() + "/data/";
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try {
-			var out = new FileOutputStream(new File(appDirectory + "user.json"));
-			out.write(gson.toJson(User.user).getBytes());
-			out = new FileOutputStream(new File(appDirectory + "group.json"));
-			out.write(gson.toJson(Group.group).getBytes());
-			out.close();
+			String[] files = { "user", "group" };
+			Object[] items = { User.user, Group.group };
+			for(int i = 0; i < files.length; ++i) {
+				File json = new File(appDirectory + files[i] + ".json");
+				File temp = new File(appDirectory + files[i] + ".temp");
+				temp.createNewFile();
+				json.delete();
+				var out = new FileOutputStream(temp);
+				out.write(gson.toJson(items[i]).getBytes());
+				out.close();
+				temp.renameTo(json);
+			}
 		} catch(JsonIOException e) {
 			e.printStackTrace();
 		} catch(JsonSyntaxException e) {
