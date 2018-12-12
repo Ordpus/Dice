@@ -16,17 +16,13 @@ public class ArraysUtil {
 	public static Map<Integer, Method> funcMap;
 
 	static {
-		funcMap = new HashMap<Integer, Method>();
+		funcMap = new HashMap<>();
 		try {
-			StdOut.printArray(ArraysUtil.class.getDeclaredMethods());
 			funcMap.put(0, ArraysUtil.class.getDeclaredMethod("sum2", Object.class, Object.class));
-
 			funcMap.put(1, ArraysUtil.class.getDeclaredMethod("mean2", Object.class, Object[].class));
 		} catch(NoSuchMethodException e) {
 			e.printStackTrace();
 		} catch(SecurityException e) {
-			e.printStackTrace();
-		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 	}
@@ -35,7 +31,7 @@ public class ArraysUtil {
 		int dim = dim(o.getClass().getTypeName());
 		try {
 			if(dim < 0) throw new NoSuchAlgorithmException("This is not an array");
-			else if(dim == 1) return oneDArrayToStr(o);
+			else if(dim == 1) return oneDArrayToStrVer(o);
 			else if(dim == 2) return matrixToStr(o);
 			else return arrayToStr(o, 0, dim, 0, Array.getLength(o), 0, new StringBuilder());
 		} catch(NoSuchAlgorithmException e) {
@@ -44,11 +40,37 @@ public class ArraysUtil {
 		}
 	}
 
-	public static String oneDArrayToStr(Object o) throws NoSuchAlgorithmException {
+	public static String oneDArrayToStrVer(Object o) throws NoSuchAlgorithmException {
+		return oneDArrayToStr(o, "\n");
+	}
+
+	public static String oneDArrayToStrHor(Object o) throws NoSuchAlgorithmException {
+		return oneDArrayToStr(o, " ");
+	}
+
+	public static String oneDArrayToStrVer(double[] d) {
+		return oneDArrayToStr(d, "", "\n");
+	}
+
+	public static String oneDArrayToStrHor(double[] d) {
+		return oneDArrayToStr(d, "", " ");
+	}
+
+	public static String oneDArrayToStr(double[] d, String pre, String post) {
+		StringBuilder result = new StringBuilder();
+		for(int i = 0; i < d.length; ++i) {
+			if(i != 0) result.append(pre);
+			result.append(d[i]);
+			if(i != d.length - 1) result.append(post);
+		}
+		return result;
+	}
+
+	private static String oneDArrayToStr(Object o, String k) throws NoSuchAlgorithmException {
 		if(dim(o.getClass().getTypeName()) != 1) throw new NoSuchAlgorithmException("The dimension of the arr should be 1");
 		StringBuilder result = new StringBuilder();
 		for(int i = 0; i < Array.getLength(o); ++i)
-			result.append(Array.get(o, i)).append('\n');
+			result.append(Array.get(o, i)).append(k);
 		return result;
 	}
 
@@ -65,21 +87,63 @@ public class ArraysUtil {
 		return result;
 	}
 
-	public static Object sum(Object o) throws NoSuchAlgorithmException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static Object sum(Object o) {
 		Counter a = new Counter();
-		check(o, 0, a);
+		try {
+			check(o, 0, a);
+		} catch(NoSuchAlgorithmException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 		long round = FastMath.round(a.d);
 		if(FastMath.abs(a.d - round) < 0.0001) return round;
 		return a.d;
 	}
 
-	public static Object mean(Object o) throws NoSuchAlgorithmException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static double sum(double[] d) {
+		double result = 0;
+		for(double dd : d)
+			result += dd;
+		return result;
+	}
+
+	public static Object mean(Object o) {
 		Counter a = new Counter(), b = new Counter();
-		check(o, 1, a, b);
+		try {
+			check(o, 1, a, b);
+		} catch(NoSuchAlgorithmException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 		double result = a.d / b.d;
 		long round = FastMath.round(result);
 		if(FastMath.abs(result - round) < 0.0001) return round;
 		return result;
+	}
+
+	public static double[] op(double[] a, double b, char op) {
+		double[] result = new double[a.length];
+		for(int i = 0; i < a.length; ++i)
+			result[i] = MathUtil.operator(op, a[i], b);
+		return result;
+	}
+
+	public static double[] op(double[] a, double[] b, char op) {
+		if(a.length < b.length) {
+			double[] temp = a;
+			a = b;
+			b = temp;
+		}
+		double[] result = new double[a.length];
+		for(int i = 0; i < b.length; i++)
+			result[i] = MathUtil.operator(op, a[i], b[i]);
+		if(a.length > b.length) System.arraycopy(a, b.length, result, b.length, a.length - b.length);
+		return result;
+	}
+
+	public static void main(String[] args) throws NoSuchAlgorithmException {
+		double[] a = { 1, 2, 3, 4, 5 };
+		double[] b = { 1, 2, 3, };
+		StdOut.println(arrayToStr(op(a, b, '+')));
+
 	}
 
 	private static void check(Object o, int arg, Object... args) throws NoSuchAlgorithmException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

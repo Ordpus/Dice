@@ -14,12 +14,16 @@ public abstract class DAstNode {
 
 	@Override
 	public String toString() {
-		String white = StdOut.genSpace(parents() + 1);
-		String type = "{\n" + white + ' ' + "type:  " + getClass().getSimpleName();
-		String elem = element().equals("") ? "" : '\n' + white + ' ' + "elem:  " + element();
-		String e1 = this.e1 == null ? "" : '\n' + white + ' ' + "e1:  " + this.e1.toString();
-		String e2 = this.e2 == null ? "" : '\n' + white + ' ' + "e2:  " + this.e2.toString();
-		return type + elem + e1 + e2 + '\n' + white + '}';
+		return toString(0);
+	}
+
+	private String toString(int depth) {
+		String white = StdOut.genSpace(2 * depth + 2);
+		String type = "{\n" + white + "  " + "type:  " + getClass().getSimpleName();
+		String elem = element().equals("") ? "" : '\n' + white + "  " + "elem:  " + element();
+		String e1 = this.e1 == null ? "" : '\n' + white + "  " + "e1:  " + this.e1.toString(depth + 1);
+		String e2 = this.e2 == null ? "" : '\n' + white + "  " + "e2:  " + this.e2.toString(depth + 1);
+		return type + elem + e1 + e2 + '\n' + white + "}";
 	}
 
 	public int parents() {

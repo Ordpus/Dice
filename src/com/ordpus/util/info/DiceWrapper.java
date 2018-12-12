@@ -24,16 +24,27 @@ public class DiceWrapper {
 		return count + "d" + size;
 	}
 
-	public double roll() {
-		if(count == 0) return size;
-		double result = 0;
-		Random rand = new Random();
+	/**
+	 *
+	 * @return {rollStr, resultStr, result}
+	 */
+	public Object[] roll() {
+		StringBuilder result = new StringBuilder();
+		double c = 0;
 		boolean isInt = MathUtil.isInt(size);
 		int bound = (int) FastMath.round(size);
-		for(int i = 0; i < count; ++i) {
-			result += (isInt == true ? rand.nextInt(bound) + 1 : rand.nextDouble() * size);
+		if(count == 0) {
+			String str = MathUtil.num2Str(size);
+			return new Object[] { str, str, size };
 		}
-		return result;
+		Random rand = new Random();
+		for(int i = 0; i < count; ++i) {
+			double r = (isInt ? rand.nextInt(bound) + 1 : rand.nextDouble() * size);
+			result.append(MathUtil.num2Str(r));
+			if(i != count - 1) result.append(" + ");
+			c += r;
+		}
+		return new Object[] { result.toString(), isInt ? Double.toString(c) : Long.toString(FastMath.round(c)), c };
 	}
 
 }

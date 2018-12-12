@@ -1,6 +1,5 @@
 package com.ordpus.util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 
 import com.ordpus.util.helper.ArraysUtil;
@@ -30,15 +29,6 @@ public class StdOut {
 		for(int j = 0; j < i; ++j)
 			result += " ";
 		return result;
-	}
-
-	public static void main(String[] args) throws NoSuchAlgorithmException {
-		int[][][] a = { { { 1, 2, 2, 7 }, { 3, 4 } }, { { 6 }, { 8 } } };
-		try {
-			StdOut.println(ArraysUtil.mean(a));
-		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
