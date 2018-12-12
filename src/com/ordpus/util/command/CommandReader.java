@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import com.ordpus.Dice;
 import com.ordpus.util.StdOut;
 import com.ordpus.util.ast.DAst;
+import com.ordpus.util.ast.nodes.DAstContentWrapper;
 import com.ordpus.util.info.Group;
 import com.ordpus.util.info.User;
 
@@ -29,7 +30,18 @@ public class CommandReader {
 		while(i < command.length() && isText(command.charAt(i++))) {}
 		String dice = command.substring(s, i);
 		var result = DAst.of(group, user, dice);
-		return new CommandWrapper("dice", "* " + Dice.CQ.getStrangerInfo(user.id).getNick() + (i < command.length() - 1 ? "由于 " + command.substring(i) : "") + " 骰出了\n" + dice + " = " + result.getContent()).add("hidden", s == 1);
+		StringBuilder res = new StringBuilder("* ");
+		res.append(Dice.CQ.getStrangerInfo(user.id).getNick());
+		if(result.getResult().isHasProblem()) {
+			DAstContentWrapper astContent = result.getResult();
+			if(astContent.isOverCount()) res.append("骰的骰子太多了,数不清啦");
+			else if(astContent.isOverSized()) res.append("骰了一个球!");
+			else res.append("的结果太长啦,嘤嘤嘤");
+		} else {
+			if(i < command.length() - 1) res.append("由于");
+			res.append(" 骰出了\n").append(dice).append(" = ").append(result.getContent());
+		}
+		return new CommandWrapper("dice", res.toString()).add("hidden", s == 1);
 	}
 
 	public static void main(String[] args) {
