@@ -21,7 +21,7 @@ public class DiceWrapper {
 
 	@Override
 	public String toString() {
-		return count + "d" + size;
+		return count + "d" + MathUtil.num2Str(size);
 	}
 
 	/**

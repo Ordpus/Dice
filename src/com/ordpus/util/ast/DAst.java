@@ -45,7 +45,7 @@ public class DAst {
 			if(i < str.length() - 1) succ = str.charAt(i + 1);
 			else succ = 0;
 			if(curr == '#') {
-				if((!Character.isDigit(prev) && prev != 'd' && prev != '(') || (succ != 'd' && !Character.isDigit(succ) && succ != '(') || inSharp) return new DAst(group, user);
+				if((!Character.isDigit(prev) && prev != 'd' && prev != ')') || (succ != 'd' && !Character.isDigit(succ) && succ != '(') || inSharp) return new DAst(group, user);
 				inD = false;
 				inSharp = true;
 			} else if(curr == 'd') {
@@ -68,19 +68,19 @@ public class DAst {
 			}
 		}
 		if(brac != 0) return new DAst(group, user);
-		StdOut.println(str);
 		return parse(group, user, str);
 	}
 
 	public static void main(String[] args) {
-		String str = "2#4";
+		String str = "(5+2d5)#(5d2+4d3)";
 		DAst root = of(new Group(), new User(), str);
 		StdOut.println(root);
+
 	}
 
 	public DAstWrapper parse() {
-		if(root == null) return new DAstWrapper(0);
-		result = parseExpression(root, false);
+		if(root == null) return new DAstWrapper(0, content);
+		result = parseExpression(root, false, false, content);
 		if(result.result != null) {
 			String res = '{' + ArraysUtil.oneDArrayToStr(result.result, ", ", "") + '}';
 			if(!res.equals(content.toString())) content.append(" = ").append(res);
@@ -96,34 +96,38 @@ public class DAst {
 		return parse();
 	}
 
-	private DAstWrapper parseExpression(DAstNode node, boolean inSharp) {
+	private DAstWrapper parseExpression(DAstNode node, boolean inSharp, boolean collect, StringBuilder content) {
 		if(node instanceof DAstNodeDice) {
 			DAstNodeDice dice = (DAstNodeDice) node;
-			Object[] roll = dice.dice.roll();
-			if(!inSharp) {
-				checkPrevOp(node, content);
-				if(dice.dice.count > 1) content.append('(');
-				content.append(roll[0]);
-				if(dice.dice.count > 1) content.append(')');
+			if(!collect) {
+				Object[] roll = dice.dice.roll();
+				if(!inSharp) {
+					checkPrevOp(node, content);
+					if(dice.dice.count > 1) content.append('(');
+					content.append(roll[0]);
+					if(dice.dice.count > 1) content.append(')');
+				}
+				return new DAstWrapper((double) roll[2], content);
 			}
-			return new DAstWrapper((double) roll[2]);
+			checkPrevOp(node, content);
+			content.append(dice.dice);
+			return new DAstWrapper(0, content);
 		} else if(node instanceof DAstNodeOp) {
 			char op = ((DAstNodeOp) node).op;
-			DAstWrapper e1 = parseExpression(node.e1, inSharp);
-			DAstWrapper e2 = parseExpression(node.e2, inSharp);
-			if(e1.result != null) return adjustPos(e1, e2, op);
-			else if(e2.result != null) return adjustPos(e2, e1, op);
-			return new DAstWrapper(MathUtil.operator(op, e1.res, e2.res));
+			DAstWrapper e1 = parseExpression(node.e1, inSharp, collect, content);
+			DAstWrapper e2 = parseExpression(node.e2, inSharp, collect, content);
+			if(e1.result != null) return adjustPos(e1, e2, op, content);
+			else if(e2.result != null) return adjustPos(e2, e1, op, content);
+			return new DAstWrapper(MathUtil.operator(op, e1.res, e2.res), content);
 		} else if(node instanceof DAstNodeSharp) {
-			int count = (int) FastMath.round(parseExpression(node.e1, true).res);
+			int count = (int) FastMath.round(parseExpression(node.e1, false, false, content).res);
 			double res = 0;
-			result = new DAstWrapper(new double[count], res);
+			StringBuilder tempStr = new StringBuilder();
+			result = new DAstWrapper(new double[count], res, parseExpression(node.e2, false, true, tempStr).builder);
 			checkPrevOp(node, content);
-			content.append('{');
+			content.append('#').append('{').append(tempStr);
 			for(int i = 0; i < count; ++i) {
-				double temp = parseExpression(node.e2, true).res;
-				content.append(MathUtil.num2Str(temp));
-				if(i != count - 1) content.append(", ");
+				double temp = parseExpression(node.e2, true, false, null).res;
 				res += temp;
 				result.result[i] = temp;
 			}
@@ -134,10 +138,10 @@ public class DAst {
 				checkPrevOp(node, content);
 				content.append('(');
 			}
-			var res = parseExpression(node.e1, inSharp);
+			var res = parseExpression(node.e1, inSharp, collect, content);
 			content.append(')');
 			return res;
-		} else return new DAstWrapper(0);
+		} else return new DAstWrapper(0, content);
 	}
 
 	private static DAst parse(Group group, User user, String str) {
@@ -171,7 +175,7 @@ public class DAst {
 			else {
 				curr = new DAstNodeDice(parseDice(parse + "0"));
 				parse = getNextBlock(str, i + end + 1);
-				curr.dice.size = parseExpression(parseExpression(group, user, null, parse, 0), false).res;
+				curr.dice.size = parseExpression(parseExpression(group, user, null, parse, 0), true, false, null).res;
 				content = new StringBuilder();
 				end += parse.length() + 3;
 			}
@@ -274,14 +278,14 @@ public class DAst {
 		if(node.parent instanceof DAstNodeOp && node.parent.e2 == node) content.append(' ').append(((DAstNodeOp) node.parent).op).append(' ');
 	}
 
-	private static DAstWrapper adjustPos(DAstWrapper e1, DAstWrapper e2, char op) {
+	private static DAstWrapper adjustPos(DAstWrapper e1, DAstWrapper e2, char op, StringBuilder builder) {
 		double[] arr = ArraysUtil.op(e1.result, e2.res, op);
-		return new DAstWrapper(arr, ArraysUtil.sum(arr));
+		return new DAstWrapper(arr, ArraysUtil.sum(arr), builder);
 	}
 
 	@Override
 	public String toString() {
-		return "{\n" + "  content:  " + content + result.toString() + "\n  tree:  " + root + "\n}";
+		return "{\n" + "  content:  " + content + (result == null ? "" : result.toString()) + "\n  tree:  " + root + "\n}";
 	}
 
 }
@@ -290,9 +294,11 @@ public class DAst {
 class DAstWrapper {
 	double[] result;
 	double res;
+	StringBuilder builder;
 
-	DAstWrapper(double res) {
+	DAstWrapper(double res, StringBuilder builder) {
 		this.res = res;
+		this.builder = builder;
 	}
 
 	@Override
