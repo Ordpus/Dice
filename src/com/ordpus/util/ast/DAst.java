@@ -73,8 +73,7 @@ public class DAst {
 	}
 
 	public static void main(String[] args) {
-		String str = "(3+4d400)*(2d5+5#4)";
-
+		String str = "2#4";
 		DAst root = of(new Group(), new User(), str);
 		StdOut.println(root);
 	}
@@ -82,9 +81,13 @@ public class DAst {
 	public DAstWrapper parse() {
 		if(root == null) return new DAstWrapper(0);
 		result = parseExpression(root, false);
-		content.append(" = ");
-		if(result.result != null) content.append('{').append(ArraysUtil.oneDArrayToStrHor(result.result)).append('}');
-		else content.append(MathUtil.num2Str(result.res));
+		if(result.result != null) {
+			String res = '{' + ArraysUtil.oneDArrayToStr(result.result, ", ", "") + '}';
+			if(!res.equals(content.toString())) content.append(" = ").append(res);
+		} else {
+			String res = MathUtil.num2Str(result.res);
+			if(!res.equals(content.toString())) content.append(" = ").append(res);
+		}
 		return result;
 	}
 

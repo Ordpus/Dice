@@ -29,7 +29,7 @@ public class CommandReader {
 		while(i < command.length() && isText(command.charAt(i++))) {}
 		String dice = command.substring(s, i);
 		var result = DAst.of(group, user, dice);
-		return new CommandWrapper("dice", "* " + Dice.CQ.getStrangerInfo(user.id).getNick() + "由于 " + command.substring(i) + " 骰出了\n" + dice + " = " + result.getContent()).add("hidden", s == 1);
+		return new CommandWrapper("dice", "* " + Dice.CQ.getStrangerInfo(user.id).getNick() + (i < command.length() - 1 ? "由于 " + command.substring(i) : "") + " 骰出了\n" + dice + " = " + result.getContent()).add("hidden", s == 1);
 	}
 
 	public static void main(String[] args) {

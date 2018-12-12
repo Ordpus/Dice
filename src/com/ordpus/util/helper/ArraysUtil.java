@@ -60,7 +60,7 @@ public class ArraysUtil {
 		StringBuilder result = new StringBuilder();
 		for(int i = 0; i < d.length; ++i) {
 			if(i != 0) result.append(pre);
-			result.append(d[i]);
+			result.append(MathUtil.num2Str(d[i]));
 			if(i != d.length - 1) result.append(post);
 		}
 		return result;
