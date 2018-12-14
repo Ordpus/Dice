@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import com.ordpus.Dice;
 import com.ordpus.util.StdOut;
 import com.ordpus.util.ast.DAst;
-import com.ordpus.util.ast.nodes.DAstContentWrapper;
 import com.ordpus.util.info.Group;
 import com.ordpus.util.info.User;
 
@@ -32,12 +31,10 @@ public class CommandReader {
 		var result = DAst.of(group, user, dice);
 		StringBuilder res = new StringBuilder("* ");
 		res.append(Dice.CQ.getStrangerInfo(user.id).getNick());
-		if(result.getResult().isHasProblem()) {
-			DAstContentWrapper astContent = result.getResult();
-			if(astContent.isOverCount()) res.append("骰的骰子太多了,数不清啦");
-			else if(astContent.isOverSized()) res.append("骰了一个球!");
-			else res.append("的结果太长啦,嘤嘤嘤");
-		} else {
+		if(result.isOverCount()) res.append("骰的骰子太多了,数不清啦");
+		else if(result.isOverSized()) res.append("骰了一个球!");
+		else if(result.isOverLength()) res.append("的结果太长啦,嘤嘤嘤");
+		else {
 			if(i < command.length() - 1) res.append("由于");
 			res.append(" 骰出了\n").append(dice).append(" = ").append(result.getContent());
 		}
