@@ -1,9 +1,10 @@
 {
-  "427984429": {
-    "id": 427984429,
+  "91283": {
+    "id": 91283,
     "characters": {},
     "kps": [],
     "setting": {
+      "user": 91283,
       "defaultDice": {
         "count": 1,
         "size": 100.0
@@ -12,11 +13,12 @@
       "simple": false
     }
   },
-  "91283": {
-    "id": 91283,
+  "348809550": {
+    "id": 348809550,
     "characters": {},
     "kps": [],
     "setting": {
+      "user": 0,
       "defaultDice": {
         "count": 1,
         "size": 100.0

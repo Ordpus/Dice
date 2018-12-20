@@ -1,0 +1,410 @@
+[
+  {
+    "id": "skill.survival.trap",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.architecture",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.biology"
+  },
+  {
+    "id": "skill.listen",
+    "value": 20.0
+  },
+  {
+    "id": "skill.science.zoology"
+  },
+  {
+    "id": "skill.rear.diving"
+  },
+  {
+    "id": "skill.locksmith"
+  },
+  {
+    "id": "skill.spot_hidden",
+    "value": 25.0
+  },
+  {
+    "id": "skill.art_and_craft.hairdressing",
+    "value": 5.0
+  },
+  {
+    "id": "skill.law",
+    "value": 5.0
+  },
+  {
+    "id": "skill.swim",
+    "value": 20.0
+  },
+  {
+    "id": "skill.climb",
+    "value": 20.0
+  },
+  {
+    "id": "skill.art_and_craft.singing",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.forgery",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.cryptography"
+  },
+  {
+    "id": "skill.science.physics"
+  },
+  {
+    "id": "skill.psychology",
+    "value": 10.0
+  },
+  {
+    "id": "skill.science.engineering"
+  },
+  {
+    "id": "skill.dodge"
+  },
+  {
+    "id": "skill.lang.japanese"
+  },
+  {
+    "id": "skill.stealth",
+    "value": 20.0
+  },
+  {
+    "id": "skill.psychoanalysis"
+  },
+  {
+    "id": "skill.art_and_craft.fishing",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.dancing",
+    "value": 5.0
+  },
+  {
+    "id": "skill.fighting.flail",
+    "value": 10.0
+  },
+  {
+    "id": "skill.lang.spanish"
+  },
+  {
+    "id": "skill.navigate",
+    "value": 10.0
+  },
+  {
+    "id": "skill.charm",
+    "value": 15.0
+  },
+  {
+    "id": "skill.art_and_craft.terracotta",
+    "value": 5.0
+  },
+  {
+    "id": "skill.fighting.brawling"
+  },
+  {
+    "id": "skill.occult",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.botany"
+  },
+  {
+    "id": "skill.fighting.garrote",
+    "value": 15.0
+  },
+  {
+    "id": "skill.first_aid",
+    "value": 30.0
+  },
+  {
+    "id": "skill.firearm.shotgun",
+    "value": 25.0
+  },
+  {
+    "id": "skill.pilot.fighter"
+  },
+  {
+    "id": "skill.library_use",
+    "value": 20.0
+  },
+  {
+    "id": "skill.pilot.lt_sailing_boat"
+  },
+  {
+    "id": "skill.fast_talk",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.sewing",
+    "value": 5.0
+  },
+  {
+    "id": "skill.rear.animal_handling",
+    "value": 5.0
+  },
+  {
+    "id": "skill.firearm.bow",
+    "value": 15.0
+  },
+  {
+    "id": "skill.fighting.spear",
+    "value": 20.0
+  },
+  {
+    "id": "skill.firearm.rifle",
+    "value": 20.0
+  },
+  {
+    "id": "skill.survival.build_fire",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.photography",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.geology"
+  },
+  {
+    "id": "skill.medicine"
+  },
+  {
+    "id": "skill.rear.hypnosis"
+  },
+  {
+    "id": "skill.pilot.lt_propeller"
+  },
+  {
+    "id": "skill.fighting.chainsaw",
+    "value": 10.0
+  },
+  {
+    "id": "skill.elec_repair",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.vintage",
+    "value": 5.0
+  },
+  {
+    "id": "skill.pilot.motor_boat"
+  },
+  {
+    "id": "skill.ride",
+    "value": 5.0
+  },
+  {
+    "id": "skill.pilot.helicopter"
+  },
+  {
+    "id": "skill.art_and_craft.literature",
+    "value": 5.0
+  },
+  {
+    "id": "skill.firearm.flamethrower",
+    "value": 10.0
+  },
+  {
+    "id": "skill.rear.read_lips"
+  },
+  {
+    "id": "skill.persuade",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.calligraphy",
+    "value": 5.0
+  },
+  {
+    "id": "skill.disguise",
+    "value": 5.0
+  },
+  {
+    "id": "skill.lang.english"
+  },
+  {
+    "id": "skill.art_and_craft.acting",
+    "value": 5.0
+  },
+  {
+    "id": "skill.pilot.hv_propeller"
+  },
+  {
+    "id": "skill.pilot.lt_fixed_wing"
+  },
+  {
+    "id": "skill.lang.portuguese"
+  },
+  {
+    "id": "skill.fighting.axe",
+    "value": 15.0
+  },
+  {
+    "id": "skill.science.mathematics"
+  },
+  {
+    "id": "skill.history",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.pharmacy"
+  },
+  {
+    "id": "skill.science.chemistry"
+  },
+  {
+    "id": "skill.intimidate",
+    "value": 15.0
+  },
+  {
+    "id": "skill.firearm.heavy_weapon",
+    "value": 5.0
+  },
+  {
+    "id": "skill.natural_world",
+    "value": 10.0
+  },
+  {
+    "id": "skill.survival.butchering",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.cooking",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.acrobatics",
+    "value": 5.0
+  },
+  {
+    "id": "skill.fighting.whip",
+    "value": 5.0
+  },
+  {
+    "id": "skill.science.astronomy"
+  },
+  {
+    "id": "skill.survival.gathering",
+    "value": 10.0
+  },
+  {
+    "id": "skill.jump",
+    "value": 20.0
+  },
+  {
+    "id": "skill.cthulhu_mythos",
+    "value": 0.0
+  },
+  {
+    "id": "skill.credit_rating",
+    "value": 0.0
+  },
+  {
+    "id": "skill.anthropology"
+  },
+  {
+    "id": "skill.pilot.ferryboat"
+  },
+  {
+    "id": "skill.throw",
+    "value": 20.0
+  },
+  {
+    "id": "skill.fighting.sword",
+    "value": 20.0
+  },
+  {
+    "id": "skill.science.meteorology"
+  },
+  {
+    "id": "skill.rear.artillery"
+  },
+  {
+    "id": "skill.art_and_craft.music_theory",
+    "value": 5.0
+  },
+  {
+    "id": "skill.sleight_of_hand",
+    "value": 10.0
+  },
+  {
+    "id": "skill.art_and_craft.geomantic_omen",
+    "value": 5.0
+  },
+  {
+    "id": "skill.computer_use",
+    "value": 5.0,
+    "age": 1990
+  },
+  {
+    "id": "skill.lang.chinese"
+  },
+  {
+    "id": "skill.appraise",
+    "value": 5.0
+  },
+  {
+    "id": "skill.track",
+    "value": 10.0
+  },
+  {
+    "id": "skill.pilot.hv_sailing_ship"
+  },
+  {
+    "id": "skill.firearm.machine_gun",
+    "value": 10.0
+  },
+  {
+    "id": "skill.electronis",
+    "age": 1920
+  },
+  {
+    "id": "skill.science.forensic"
+  },
+  {
+    "id": "skill.pilot.hv_fixed_wing"
+  },
+  {
+    "id": "skill.firearm.submachine_gun",
+    "value": 15.0
+  },
+  {
+    "id": "skill.drive_auto",
+    "value": 20.0
+  },
+  {
+    "id": "skill.rear.demolitions"
+  },
+  {
+    "id": "skill.accounting",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.sculpture",
+    "value": 5.0
+  },
+  {
+    "id": "skill.art_and_craft.fine_art",
+    "value": 5.0
+  },
+  {
+    "id": "skill.archaeology"
+  },
+  {
+    "id": "skill.firearm.handgun",
+    "value": 20.0
+  },
+  {
+    "id": "skill.op_hv_machine"
+  },
+  {
+    "id": "skill.mech_repair",
+    "value": 10.0
+  }
+]
