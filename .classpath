@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="lib/jcq-coolq-1.2.7.jar"/>
 	<classpathentry kind="lib" path="D:/Program Files/eclipse/lombok.jar"/>
-	<classpathentry kind="lib" path="D:/Programs/Java/Dice/lib/commons-math3-3.6.1.jar"/>
-	<classpathentry kind="lib" path="D:/Programs/Java/Dice/lib/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="D:/Programs/Java/Dice/lib/commons-math3-3.6.1.jar" sourcepath="C:/Users/15007/AppData/Local/Temp/.org.sf.feeling.decompiler1544752327409/source/commons-math3-3.6.1-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Programs/Java/Dice/lib/gson-2.8.5.jar" sourcepath="C:/Users/15007/AppData/Local/Temp/.org.sf.feeling.decompiler1544752327409/source/gson-2.8.5-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

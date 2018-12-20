@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JOptionPane;
@@ -14,10 +18,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.ordpus.character.enums.skills.Skill;
+import com.ordpus.character.enums.skills.SkillSet;
+import com.ordpus.util.StdOut;
 import com.ordpus.util.command.CommandReader;
 import com.ordpus.util.command.CommandWrapper;
 import com.ordpus.util.info.Group;
 import com.ordpus.util.info.User;
+import com.ordpus.util.ios.SkillSetJsonSerializer;
+import com.ordpus.util.ios.SkillsJsonSerializer;
 import com.sobte.cqp.jcq.entity.Anonymous;
 import com.sobte.cqp.jcq.entity.CQDebug;
 import com.sobte.cqp.jcq.entity.GroupFile;
@@ -40,6 +49,13 @@ import lombok.var;
  * 辅助开发变量: {@link JcqAppAbstract#CQ CQ}({@link com.sobte.cqp.jcq.entity.CoolQ 酷Q核心操作类}), {@link JcqAppAbstract#CC CC}({@link com.sobte.cqp.jcq.entity.CQCode 酷Q码操作类}), 具体功能可以查看文档
  */
 public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
+
+	public static final String groupSettingFile = "/settings/group", userSettingFile = "/settings/user", defaultSkillsFile = "/skills/defaultSkills",
+			defaultSkillSetsFile = "/skills/defaultSkillSets";
+
+	String[] files = { userSettingFile, groupSettingFile, defaultSkillsFile, defaultSkillSetsFile };
+
+	static Gson gson = new GsonBuilder().registerTypeAdapter(SkillSet.class, new SkillSetJsonSerializer()).registerTypeAdapter(Skill.class, new SkillsJsonSerializer()).setPrettyPrinting().create();
 
 	/**
 	 * 用main方法调试可以最大化的加快开发效率，检测和定位错误位置<br/>
@@ -93,22 +109,30 @@ public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 	 *
 	 * @return 请固定返回0
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public int startup() {
 		// 获取应用数据目录(无需储存数据时，请将此行注释)
 		val appDirectory = CQ.getAppDirectory() + "/data/";
 		// 返回如：D:\CoolQ\app\com.sobte.cqp.jcq\app\com.example.demo\
 		// 应用的所有数据、配置【必须】存放于此目录，避免给用户带来困扰。
-		Gson gson = new Gson();
 		try {
-			User.user = gson.fromJson(new FileReader(appDirectory + "group.json"), new TypeToken<Map<Long, User>>() {}.getType());
-			Group.group = gson.fromJson(new FileReader(new File(appDirectory + "group.json")), new TypeToken<Map<Long, Group>>() {}.getType());
-
+			Object[] results = new Object[files.length];
+			Type[] tokens = { new TypeToken<HashMap<Long, User>>() {}.getType(), new TypeToken<HashMap<Long, Group>>() {}.getType(), new TypeToken<ArrayList<Skill>>() {}.getType(), new TypeToken<ArrayList<SkillSet>>() {}.getType() };
+			for(int i = 0; i < files.length; ++i) {
+				Reader read = new FileReader(appDirectory + files[i] + ".json");
+				results[i] = gson.fromJson(read, tokens[i]);
+				read.close();
+			}
+			User.user = (Map<Long, User>) results[0];
+			Group.group = (Map<Long, Group>) results[1];
 		} catch(JsonIOException e) {
 			e.printStackTrace();
 		} catch(JsonSyntaxException e) {
 			e.printStackTrace();
 		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 		return 0;
@@ -124,19 +148,18 @@ public class Dice extends JcqAppAbstract implements ICQVer, IMsg, IRequest {
 	@Override
 	public int exit() {
 		val appDirectory = CQ.getAppDirectory() + "/data/";
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try {
-			String[] files = { "user", "group" };
-			Object[] items = { User.user, Group.group };
+			Object[] items = { User.user, Group.group, SkillSet.skills.values(), SkillSet.skillSets.values() };
 			for(int i = 0; i < files.length; ++i) {
 				File json = new File(appDirectory + files[i] + ".json");
 				File temp = new File(appDirectory + files[i] + ".temp");
 				temp.createNewFile();
-				json.delete();
 				var out = new FileOutputStream(temp);
 				out.write(gson.toJson(items[i]).getBytes());
+				out.flush();
 				out.close();
-				temp.renameTo(json);
+				StdOut.println(json.delete(), temp.renameTo(json), json);
+				temp.delete();
 			}
 		} catch(JsonIOException e) {
 			e.printStackTrace();

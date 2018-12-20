@@ -10,6 +10,10 @@ public class MathUtil {
 		return FastMath.abs(d - FastMath.round(d)) < 0.00001;
 	}
 
+	public static boolean isInt(double d, int a) {
+		return FastMath.abs(d - a) < 0.00001;
+	}
+
 	public static String num2Str(double d) {
 		if(isInt(d)) return Long.toString(FastMath.round(d));
 		else return new DecimalFormat("#.###").format(d);

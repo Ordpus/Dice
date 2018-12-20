@@ -106,7 +106,7 @@ public class ArraysUtil {
 		return result;
 	}
 
-	public static Object mean(Object o) {
+	public static double mean(Object o) {
 		Counter a = new Counter(), b = new Counter();
 		try {
 			check(o, 1, a, b);
@@ -114,8 +114,6 @@ public class ArraysUtil {
 			e.printStackTrace();
 		}
 		double result = a.d / b.d;
-		long round = FastMath.round(result);
-		if(FastMath.abs(result - round) < 0.0001) return round;
 		return result;
 	}
 

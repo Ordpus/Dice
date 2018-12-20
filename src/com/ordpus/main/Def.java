@@ -5,11 +5,15 @@ import com.ordpus.util.helper.Localisation;
 public class Def {
 
 	public String id;
-	public String name;
+	public String description;
 
 	public Def(String id, Localisation loc) {
 		this.id = id;
-		name = loc.local(id);
+	}
+
+	@Override
+	public String toString() {
+		return id;
 	}
 
 }
